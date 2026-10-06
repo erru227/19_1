@@ -2,37 +2,26 @@
 var output = document.getElementById("output");
 var link = document.getElementById("link");
 
-function loadLink(){
+function print(msg){
+    output.innerHTML += '<p>';
+    output.innerHTML += msg;
+    output.innerHTML += '</p>';
+}
+
+function getPromise(){
     let url = link.value;
-    /*Using try/catch functionality for this
-    New JavaScript grammar
-    */
+    output.textContent = "";
     fetch(url)
         .then(function(response) {
-            output.innerHTML = "<p>status is " + response.status + "<br>";
-            output.innerHTML += "OK is " + response.ok + "<br>";
-            output.innerHTML += "html is " + response.html + "<br>";
-            output.innerHTML += "headers are " + response.headers + "<br>";
-            output.innerHTML += "Response: " + response.text()+"</p>";
+            print("status is "+response.status);
+            print("ok is "+response.ok);
+            print("headers are "+response.headers);
+            print("text is "+response.text());
+            print("json is "+response.json());
         })
-        .then(function(html) {
-            output.innerHTML += "<br>HTML:" + html;
-        })
+        .then(html => print("HTML:" + html))
+        .then(data => print("Data:" + data))
         .catch(function(error) {
             output.textContent = "Request failed";
         });
 }
-/*
-let url = "https://learn.zybooks.com/";
-fetch(url)
-   .then(function(response) {
-      output.textContent = "status is " + response.status;
-          return response.text();
-   })
-   .then(function(html) {
-      output.textContent = html;
-   })
-   .catch(function(error) {
-      output.textContent = "Request failed";
-});
-*/
